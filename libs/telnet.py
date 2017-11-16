@@ -54,9 +54,7 @@ class BdTelnet(object):
         match = ['%s%s' % (i, cmd) for i in ['>', '# ', '$ ']]
         # the first line, e.g. ~$ cmd, C:\Users\Administrator>cmd
         cmd_line = self.tn.expect(match)[-1].splitlines()[-1]
-        # print('cmd: %s' % cmd_line)
         delimiter = cmd_line[: -len(cmd)]
-        # print('delimiter: %s' % delimiter)
         result = self._read_until(delimiter)
         # remove the last line, e.g. ~$, C:\Users\Administrator>
         result = self.linefeed.join(result.splitlines()[:-1])
@@ -70,18 +68,6 @@ class BdTelnet(object):
         password = password if password else self.password
         'login:' in self._read_until('login:', 15) and self._write(username)
         'assword:' in self._read_until('assword:') and self._write(password)
-        # login = self._read_until('login:', 15)
-        # print('login'.center(100, '-'))
-        # print(login)
-        # if 'login:' in login:
-        #     print('Write login username')
-        #     self._write(username)
-        # pwd = self._read_until('assword:')
-        # print('password'.center(100, '-'))
-        # print(pwd)
-        # if 'assword:' in pwd:
-        #     print('Write password')
-        #     self._write(password)
         if self.success_flag in self._read_until(self.success_flag):
             print('Login Successful!')
             self.is_login = True
